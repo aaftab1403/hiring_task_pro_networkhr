@@ -474,9 +474,9 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Product List */}
-        <div className="w-56 flex-shrink-0">
+        <div className="w-full md:w-56 flex-shrink-0">
           <div className="text-xs mb-2 px-1" style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
             PRODUCTS ({products.length})
           </div>

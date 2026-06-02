@@ -186,7 +186,7 @@ export default async function QuoteViewPage({ params }: QuotePageProps) {
         </div>
 
         {/* Cost Breakdown */}
-        <div className="card overflow-hidden mb-6">
+        <div className="card overflow-x-auto mb-6">
           <div
             className="px-6 py-4 border-b flex items-center justify-between"
             style={{ borderColor: 'var(--border-default)', background: 'var(--bg-secondary)' }}
@@ -309,7 +309,7 @@ export default async function QuoteViewPage({ params }: QuotePageProps) {
 
         {/* Add-Ons Summary */}
         {quote.quoteAddOns.length > 0 && (
-          <div className="card overflow-hidden mb-8">
+          <div className="card overflow-x-auto mb-8">
             <div
               className="px-6 py-4 border-b"
               style={{ borderColor: 'var(--border-subtle)' }}

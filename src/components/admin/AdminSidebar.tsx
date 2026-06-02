@@ -15,16 +15,15 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      className="w-56 flex-shrink-0 flex flex-col border-r"
+      className="w-full md:w-56 flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r min-h-0 md:min-h-screen"
       style={{
         background: 'var(--bg-secondary)',
         borderColor: 'var(--border-default)',
-        minHeight: '100vh',
       }}
     >
-      {/* Logo */}
+      {/* Logo / Header */}
       <div
-        className="p-5 border-b"
+        className="p-4 md:p-5 border-b flex items-center justify-between md:block"
         style={{ borderColor: 'var(--border-default)' }}
       >
         <div className="flex items-center gap-2">
@@ -43,11 +42,14 @@ export default function AdminSidebar() {
             </div>
           </div>
         </div>
+        <div className="text-xs md:hidden" style={{ color: 'var(--text-muted)' }}>
+          v1.0.0
+        </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-3 space-y-1">
-        <div className="mb-3 px-3 text-xs font-600" style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
+      <nav className="p-3 flex flex-row md:flex-col flex-wrap gap-1 md:space-y-1">
+        <div className="hidden md:block mb-3 px-3 text-xs font-600" style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
           CATALOG
         </div>
         {navItems.slice(0, 3).map((item) => {
@@ -58,15 +60,15 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`nav-link ${isActive ? 'active' : ''}`}
+              className={`nav-link py-1.5 md:py-2 ${isActive ? 'active' : ''}`}
             >
               <span className="text-base">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="text-xs md:text-sm">{item.label}</span>
             </Link>
           );
         })}
 
-        <div className="mt-4 mb-3 px-3 text-xs font-600" style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
+        <div className="hidden md:block mt-4 mb-3 px-3 text-xs font-600" style={{ color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
           TRANSACTIONS
         </div>
         {navItems.slice(3).map((item) => {
@@ -75,17 +77,17 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`nav-link ${isActive ? 'active' : ''}`}
+              className={`nav-link py-1.5 md:py-2 ${isActive ? 'active' : ''}`}
             >
               <span className="text-base">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="text-xs md:text-sm">{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="hidden md:block p-4 mt-auto border-t" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
           v1.0.0 · Vercel-ready
         </div>
