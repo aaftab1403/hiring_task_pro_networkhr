@@ -298,6 +298,27 @@ DATABASE_URL="<prod-url>" npx prisma migrate deploy
 
 ---
 
+## Assumptions, Decisions & Questions
+
+### Assumptions Made
+1. **Per-Seat Add-On Independence**: We assumed that the number of seats for a `PER_SEAT` add-on is configured independently of the base product core seats (e.g., a customer buys 50 core seats but only buys 10 seats for a specific add-on).
+2. **Term Discounts Application**: We assumed the 15% (Annual) and 25% (2-Year) term discounts apply solely to the base product cost and not to add-ons. Add-ons are computed at their base rate over the contract duration.
+3. **Percentage of Product Add-On Calculation**: We assumed that a percentage-based add-on is computed as a percentage of the total calculated base product cost (which includes seats, duration, and term discount) rather than just the seat unit price.
+4. **Idempotence of Seed Data**: We assumed that seed data should use fixed UUIDs rather than random ones at run time, allowing for consistent shareable links and reproducible test scenarios.
+
+### Decisions & Options Chosen
+1. **Prisma 7 Native Driver Adapter**: Next.js App Router on Vercel works best with native serverless drivers. We adopted `@prisma/adapter-pg` with a `pg` client singleton to avoid serverless connection exhaustion.
+2. **Pure Pricing Engine**: We decoupled the core calculation logic into a stateless `pricing.ts` module. This choice keeps our unit tests extremely fast (0ms database overhead) and makes it easy to share the exact same calculations between Next.js APIs, server components, and client-side form previews.
+3. **Zod Schema Enforcements**: We used Zod schema validation with strict `.uuid()` checks at all boundary route handlers to prevent SQL injection or relational database errors.
+
+### Questions We Would Have Asked
+1. Should the term length discount (e.g., 15% off for annual) also apply to paid add-ons, or is it strictly for the base product license?
+2. Should add-on seat counts be capped by the core seat count of the quote?
+3. For percentage of product add-ons, does "percentage of product price" refer to the monthly unit price or the total contract value of the base tier?
+4. Do quotes need a state/status field (e.g. Draft, Active, Expired) and audit logging for revisions?
+
+---
+
 ## Extension Points
 
 ### Multi-Currency Support

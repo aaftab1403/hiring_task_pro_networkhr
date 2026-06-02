@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import {
   calculateQuote,
@@ -117,6 +118,17 @@ export default async function QuoteViewPage({ params }: QuotePageProps) {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
+
+        {/* Back Navigation */}
+        <div className="mb-6">
+          <Link
+            href="/admin/quotes"
+            className="inline-flex items-center gap-2 text-xs font-mono transition-colors hover:text-white"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            <span>←</span> BACK TO QUOTES
+          </Link>
+        </div>
 
         {/* Quote Header */}
         <div className="mb-8">

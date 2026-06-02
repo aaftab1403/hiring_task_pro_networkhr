@@ -119,7 +119,7 @@ After saving, the quote appears in the table with a **"View →"** button.
 
 The seeded sample quote is ready at:
 
-**http://localhost:3000/quote/seed-quote-001**
+**http://localhost:3000/quote/d95fddd8-e28c-49dc-b5e2-7a167f5b12ec**
 
 This is the **unauthenticated, shareable client-facing URL**. It shows:
 
@@ -200,7 +200,7 @@ npm run test:e2e:ui
 | `http://localhost:3000/admin/products` | Create/manage products, tiers, features |
 | `http://localhost:3000/admin/matrix` | Feature × Tier matrix editor |
 | `http://localhost:3000/admin/quotes` | Quote builder + list |
-| `http://localhost:3000/quote/seed-quote-001` | Sample public quote view |
+| `http://localhost:3000/quote/d95fddd8-e28c-49dc-b5e2-7a167f5b12ec` | Sample public quote view |
 | `http://localhost:3000/quote/[any-quote-id]` | Any saved quote public view |
 
 ---
