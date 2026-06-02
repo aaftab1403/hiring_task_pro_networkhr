@@ -78,7 +78,9 @@ export function calculateAddOnCost(
   baseProductCost: number,
   durationMonths: number
 ): { cost: number; formula: string } {
-  const { featureName, pricingModel, value, selectedSeats } = addon;
+  const { featureName, pricingModel, selectedSeats } = addon;
+  // Coerce to number: Prisma Decimal serializes as string in JSON responses
+  const value = Number(addon.value);
 
   switch (pricingModel) {
     case 'FIXED_MONTHLY': {
@@ -111,7 +113,11 @@ export function calculateAddOnCost(
  * Produces line items with human-readable formulas for the public quote view.
  */
 export function calculateQuote(input: QuoteCalculationInput): QuoteCalculationResult {
-  const { coreSeats, tierBasePrice, termLength, globalDiscountPercent, addOns, tierName } = input;
+  const { termLength, addOns, tierName } = input;
+  // Coerce all numeric inputs: Prisma Decimal and integer fields can arrive as strings from JSON
+  const coreSeats = Number(input.coreSeats);
+  const tierBasePrice = Number(input.tierBasePrice);
+  const globalDiscountPercent = Number(input.globalDiscountPercent);
 
   const termConfig = TERM_CONFIG[termLength];
   const { durationMonths, termDiscount } = termConfig;
