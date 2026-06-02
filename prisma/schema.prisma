@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  tiers    Tier[]
+  features Feature[]
+  quotes   Quote[]
+}
+
+model Tier {
+  id          String  @id @default(uuid())
+  productId   String
+  name        String
+  basePrice   Decimal @db.Decimal(10, 2)
+  description String? @db.Text
+
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  featureMatrix  FeatureMatrix[]
+  addOnPricings  AddOnPricing[]
+  quotes         Quote[]
+}
+
+model Feature {
+  id          String  @id @default(uuid())
+  productId   String
+  name        String
+  description String? @db.Text
+
+  product       Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  featureMatrix FeatureMatrix[]
+  addOnPricings AddOnPricing[]
+  quoteAddOns   QuoteAddOn[]
+}
+
+model FeatureMatrix {
+  id           String       @id @default(uuid())
+  tierId       String
+  featureId    String
+  availability Availability @default(NOT_AVAILABLE)
+
+  tier    Tier    @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@unique([tierId, featureId])
+}
+
+model AddOnPricing {
+  id           String       @id @default(uuid())
+  tierId       String
+  featureId    String
+  pricingModel PricingModel
+  value        Decimal      @db.Decimal(10, 4)
+
+  tier    Tier    @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@unique([tierId, featureId])
+}
+
+model Quote {
+  id             String     @id @default(uuid())
+  customerName   String
+  quoteName      String
+  productId      String
+  tierId         String
+  coreSeats      Int
+  termLength     TermLength
+  globalDiscount Decimal    @default(0.0) @db.Decimal(5, 2)
+  createdAt      DateTime   @default(now())
+  validUntil     DateTime
+
+  product    Product      @relation(fields: [productId], references: [id])
+  tier       Tier         @relation(fields: [tierId], references: [id])
+  quoteAddOns QuoteAddOn[]
+}
+
+model QuoteAddOn {
+  id            String  @id @default(uuid())
+  quoteId       String
+  featureId     String
+  selectedSeats Int?
+
+  quote   Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id])
+}
+
+enum Availability {
+  INCLUDED
+  NOT_AVAILABLE
+  PAID_ADD_ON
+}
+
+enum PricingModel {
+  FIXED_MONTHLY
+  PER_SEAT
+  PERCENT_OF_PRODUCT
+}
+
+enum TermLength {
+  MONTHLY
+  ANNUAL
+  TWO_YEAR
+}
